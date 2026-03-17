@@ -41,9 +41,8 @@ bash
 
 
 
-# 克隆项目（替换为实际仓库地址）
-git clone [项目仓库地址]
-cd PonyVille-School-Management-A-MyLittlePony-Theme-Based-School-Management-Website-Front-End
+# 克隆项目
+自行复制克隆地址即可
 
 # 安装项目依赖
 npm install
@@ -290,81 +289,249 @@ server {
 在路由配置中新增模块路由规则；
 复用 src/utils/request.js 统一请求工具，无需重复封装。
 
-PonyVille-School-Management Campus Management System (Frontend)
+
+
+# PonyVille School Management System (Frontend)
+PonyVille-School-Management is a frontend project of a comprehensive campus management system themed on *My Little Pony*, built with Vue 3 + Vite. It covers multi-dimensional core campus business modules such as subjects, departments, and classes, providing standardized CRUD (Create, Read, Update, Delete), detail echo, pagination query, and other functions. It combines thematic visual design with standardized frontend engineering implementation.
+
+## Project Overview
+### Core Positioning
+A one-stop frontend solution for campus management scenarios, focusing on core management modules including subjects, departments, and classes. It realizes the full lifecycle management of business data, adapts to the actual business processes of campus management, and reduces operational thresholds and improves user experience through the My Little Pony-themed style.
+
+### Core Technology Stack
+| Technology/Tool       | Version/Core Purpose                     |
+|-----------------------|------------------------------------------|
+| Frontend Framework    | Vue 3 (Composition API + `<script setup>`) |
+| Build Tool            | Vite (Ultra-fast hot update, lightweight packaging) |
+| Routing Management    | Vue Router 4 (Page routing configuration / Permission control) |
+| Network Request       | Axios (Encapsulated unified request tool with interceptors) |
+| Code Specification    | ESLint + Prettier (Optional, ensuring unified code style) |
+| Runtime Environment   | Node.js ≥ 16.x (LTS version recommended) |
+
+### Core Business Modules
+| Module Name           | Core Functions                                                                 |
+|-----------------------|--------------------------------------------------------------------------------|
+| Subject Management    | Query all subject lists, add new subjects, modify subject information, delete specified subjects, query subjects by ID (echo) |
+| Department Management | Query all department lists, add new departments, modify department information, delete specified departments, query departments by ID (echo) |
+| Class Management      | Conditional pagination query for classes, query all classes, detail query, add/edit/delete classes (extended module) |
+| (Extendable)          | Grade management, permission management, and other core campus business modules |
+
+## Quick Start
+### Environment Preparation
+1. Install Node.js (v16.x or above recommended), which comes with the npm package management tool;
+2. Recommended development tools: VSCode + Volar plugin (disable Vetur) + TypeScript Vue Plugin (Volar);
+3. Ensure the backend API service is running, and the `baseURL` configured in the frontend request tool is consistent with the backend address.
+
+### Installation and Running
+```bash
+# Clone the project
+Copy the clone address yourself
+
+# Install project dependencies
+npm install
+
+# Start the development environment (default port: 5173, modifiable in vite.config.js)
+npm run dev
+
+# Build for production environment (packaged products output to the dist directory)
+npm run build
+
+# (Optional) ESLint code check and automatic repair
+npm run lint
+```
+
+## Project Directory Structure
+```plaintext
+src/
+├── api/                # API encapsulation directory (split by business module)
+│   ├── sub.js          # Subject management API (query/add/edit/delete/echo)
+│   ├── dept.js         # Department management API (query/add/edit/delete/echo)
+│   ├── clazz.js        # Class management API (pagination/query/add/edit/delete)
+│   └── ...             # Other business module APIs
+├── assets/             # Static resource directory
+│   ├── pony/           # My Little Pony theme resources (images/styles/fonts)
+│   ├── css/            # Global styles
+│   └── img/            # General image resources
+├── router/             # Routing configuration directory
+│   └── index.js        # Routing rules (module routing/permission routing)
+├── utils/              # Utility function directory
+│   └── request.js      # Axios encapsulation (request/response interceptors/basic configuration)
+├── views/              # Page-level component directory
+│   ├── subject/        # Subject management pages (list/add/edit/detail)
+│   ├── dept/           # Department management pages (list/add/edit/detail)
+│   ├── clazz/          # Class management pages (list/add/edit/detail)
+│   └── ...             # Other business pages
+├── App.vue             # Root component (global layout/routing outlet)
+└── main.js             # Project entry (Vue instance creation/global configuration)
+```
+
+## Core API Specifications
+### API Encapsulation Principles
+1. All business APIs are uniformly placed in the `src/api/` directory and split into files by module (e.g., `sub.js` for subjects, `dept.js` for departments);
+2. API functions are implemented based on the Axios instance encapsulated in `@/utils/request.js`, automatically inheriting request/response interception capabilities (such as Token carrying, unified error handling);
+3. Semantic naming for APIs: `[Action] + Api` (e.g., `queryAllApi` for full query, `addApi` for addition, `updateApi` for modification);
+4. Path parameters are spliced using ES6 template strings, and request body parameters are passed directly, aligning with the backend RESTful API specifications.
+
+### Core API Example (Subject Management | src/api/sub.js)
+```javascript
+import RequestApi from '@/utils/request.js';
+
+// Query all subject lists
+export const queryAllApi = () => RequestApi.get('/subjects');
+
+// Modify subject information
+export const updateApi = (subject) => RequestApi.put('/subjects', subject);
+
+// Delete the specified subject (pass ID as path parameter)
+export const deleteApi = (id) => RequestApi.delete(`/subjects/${id}`);
+
+// Add a new subject
+export const addApi = (subject) => RequestApi.post('/subjects', subject);
+
+// Query subject by ID (echo/detail, pass ID as path parameter)
+export const queryByIdApi = (id) => RequestApi.get(`/subjects/${id}`);
+```
+
+### API Calling Example
+```javascript
+// Take subject management as an example to call APIs in page components
+import { queryAllApi, addApi } from '@/api/sub.js';
+
+// Query all subject lists
+const getSubjectList = async () => {
+  try {
+    const res = await queryAllApi();
+    console.log('Subject list:', res.data);
+  } catch (err) {
+    console.error('Query failed:', err.message);
+  }
+};
+
+// Add a new subject
+const addSubject = async (newSubject) => {
+  try {
+    await addApi(newSubject);
+    alert('Subject added successfully!');
+    // Re-query the list after addition
+    getSubjectList();
+  } catch (err) {
+    alert('Failed to add subject: ' + err.message);
+  }
+};
+```
+
+## Global Request Tool (src/utils/request.js)
+### Core Functions
+1. Configure the base request address (`baseURL`) to adapt to API address switching between development/production environments;
+2. Request interceptor: uniformly add request headers such as Token and Content-Type to implement preprocessing for permission verification;
+3. Response interceptor: uniformly handle backend return codes (e.g., 401 Unauthorized, 403 Forbidden, 500 Server Error) to simplify exception handling at the business layer;
+4. General configuration: timeout setting, cross-domain request handling, request cancellation mechanism, etc.
+
+### Basic Configuration Example
+```javascript
+import axios from 'axios';
+
+// Create Axios instance
+const RequestApi = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Read API prefix from environment variables
+  timeout: 5000, // Request timeout time
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  }
+});
+
+// Request interceptor
+RequestApi.interceptors.request.use(
+  (config) => {
+    // Automatically carry Token (example)
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor
+RequestApi.interceptors.response.use(
+  (response) => response.data, // Return response body directly
+  (error) => {
+    // Unified error handling
+    if (error.response.status === 401) {
+      alert('Login has expired, please log in again');
+      // Redirect to login page (need to combine with routing)
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
 export default RequestApi;
-Development specifications
+```
 
-1. Code style
+## Development Specifications
+### 1. Code Style
+- Follow ESLint + Prettier configuration, run `npm run lint` to fix specification issues before submitting code;
+- Prioritize using the `<script setup>` syntax for Vue components to reduce redundant code;
+- Semantic naming for variables/functions: camelCase (e.g., `getSubjectList`), avoid pinyin/meaningless naming.
 
-Follow ESLint + Prettier configuration, execute npm run lint before committing code to fix specification issues;
-Vue components prioritize the use of  syntax to reduce redundant code;
-Variable/function naming semantics: hump naming (e.g. getSubjectList) to avoid pinyin/nonsensical naming.
-2. Interface development
+### 2. API Development
+- Split API files by business module, prohibit writing all APIs in a single file;
+- API functions only encapsulate requests and do not contain business logic;
+- Asynchronous requests must add exception capture (`try/catch` or `.catch`).
 
-Interface files are split according to service modules, and all interfaces are prohibited from being written in the same file.
-Interface functions only encapsulate requests and do not contain business logic.
-Asynchronous requests must have an exception catch (try/catch or .catch) added.
-3. Resource management
+### 3. Resource Management
+- My Little Pony theme resources are uniformly placed in the `src/assets/pony/` directory, split by type (images/styles);
+- Static images prefer relative paths to avoid deployment issues caused by absolute paths.
 
-My Little Pony theme resources are uniformly placed in the src/assets/pony/ directory, and are split by type (picture/style);
-Static images prioritize relative paths to avoid deployment issues caused by absolute paths.
-Deployment instructions
-
-1. Package Build
-
-bash
-
-Run
-
-# Generate the production environment packaging file (output to the dist directory)
+## Deployment Instructions
+### 1. Package Building
+```bash
+# Generate production environment package files (output to the dist directory)
 npm run build
-2. Server deployment
+```
 
-upload the dist directory to a web server such as Nginx/Apache;
-Configure Nginx Reverse Proxy to Solve Cross-Domain Issues (Example):
-nginx
-
+### 2. Server Deployment
+- Upload the `dist` directory to a web server such as Nginx/Apache;
+- Configure Nginx reverse proxy to solve cross-domain issues (example):
+```nginx
 server {
     listen 80;
     server_name ponyville-school.com; # Custom domain name
-    root /usr/share/nginx/html/dist; # Package the file storage path
+    root /usr/share/nginx/html/dist; # Packaging file storage path
     index index.html;
 
-# Solve the problem of front-end route refresh 404
+    # Solve the 404 problem of frontend routing refresh
     location / {
         try_files $uri $uri/ /index.html;
     }
 
-# Reverse proxy interface request (to solve cross-domain)
+    # Reverse proxy API requests (solve cross-domain)
     location /subjects {
-        proxy_pass http:// backend interface address; # Replace with the actual backend address
+        proxy_pass http://backend-api-address; # Replace with actual backend address
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
     
-# Other module interface agents (departments/classes)
+    # Other module API proxies (departments/classes)
     location /depts {
-        proxy_pass http:// backend interface address;
+        proxy_pass http://backend-api-address;
     }
     location /clazzs {
-        proxy_pass http:// backend interface address;
+        proxy_pass http://backend-api-address;
     }
 }
-Notes:
+```
 
-The deletion interface parameter format (path parameter/query parameter) of the discipline/department/class must be strictly aligned with the backend.
-My Little Pony theme resources are only used in non-commercial scenarios, so you need to pay attention to copyright compliance;
-When deploying in a production environment, you need to turn off the front-end console logs and enable interface request encryption (such as token verification).
+## Notes
+- The parameter format (path parameter/query parameter) of the delete API for subjects/departments/classes must be strictly aligned with the backend;
+- My Little Pony theme resources are only used for non-commercial scenarios, and attention should be paid to copyright compliance;
+- When deploying in the production environment, disable frontend console logs and enable API request encryption (such as Token verification).
 
-Extended Instructions
-
-This project supports the rapid expansion of new business modules and extended processes:
-Add the interface file of the corresponding module to the src/api/ directory;
-Develop module page components in the src/views/ directory;
-Added module routing rules to the routing configuration.
-Reuse the src/utils/request.js unified request tool without the need for duplicate encapsulation.
+## Extension Instructions
+This project supports rapid expansion of new business modules, with the expansion process as follows:
+1. Add a new API file for the corresponding module in the `src/api/` directory;
+2. Develop module page components in the `src/views/` directory;
+3. Add new module routing rules in the routing configuration;
+4. Reuse the unified request tool `src/utils/request.js` without repeated encapsulation.
