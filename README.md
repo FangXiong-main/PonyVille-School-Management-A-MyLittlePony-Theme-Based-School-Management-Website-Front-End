@@ -1,46 +1,44 @@
-PonyVille-School-Management 校园管理系统（前端）
+# PonyVille-School-Management 校园管理系统（前端）
 
 PonyVille-School-Management 是一款以《My Little Pony（小马宝莉）》为主题的校园综合管理系统前端项目，基于 Vue 3 + Vite 构建，覆盖学科、部门、班级等多维度校园核心业务模块，提供标准化的增删改查（CRUD）、详情回显、分页查询等功能，兼具主题化视觉设计与规范化的前端工程化实现。
-项目简介
 
-核心定位
+## 项目简介
+
+### 核心定位
 
 面向校园管理场景的一站式前端解决方案，聚焦学科、部门、班级等核心管理模块，实现业务数据的全生命周期管理，适配校园管理的实际业务流程，同时通过小马宝莉主题风格降低操作门槛、提升使用体验。
-技术栈核心
 
-表格
-技术 / 工具	版本 / 核心用途
-前端框架	Vue 3（Composition API + <script setup>）
-构建工具	Vite（极速热更新、轻量化打包）
-路由管理	Vue Router 4（页面路由配置 / 权限控制）
-网络请求	Axios（封装统一请求工具，含拦截器）
-代码规范	ESLint + Prettier（可选，保证代码风格统一）
-运行环境	Node.js ≥ 16.x（推荐 LTS 版本）
-核心业务模块
+### 技术栈核心
 
-表格
-模块名称	核心功能
-学科管理（Subject）	全量查询学科列表、新增学科、修改学科信息、删除指定学科、按 ID 查询学科（回显）
-部门管理（Dept）	全量查询部门列表、新增部门、修改部门信息、删除指定部门、按 ID 查询部门（回显）
-班级管理（Clazz）	条件分页查询班级、全量查询班级、详情查询、新增 / 编辑 / 删除班级（扩展模块）
-（可扩展）	成绩管理、权限管理等校园核心业务模块
-快速开始
+| 技术 / 工具 | 版本 / 核心用途 |
+|------------|----------------|
+| 前端框架 | Vue 3（Composition API + `<script setup>`） |
+| 构建工具 | Vite（极速热更新、轻量化打包） |
+| 路由管理 | Vue Router 4（页面路由配置 / 权限控制） |
+| 网络请求 | Axios（封装统一请求工具，含拦截器） |
+| 代码规范 | ESLint + Prettier（可选，保证代码风格统一） |
+| 运行环境 | Node.js ≥ 16.x（推荐 LTS 版本） |
 
-环境准备
+## 核心业务模块
 
-安装 Node.js（推荐 v16.x 及以上版本），自带 npm 包管理工具；
-开发工具推荐：VSCode + Volar 插件（禁用 Vetur） + TypeScript Vue Plugin (Volar)；
-确保后端接口服务已启动，且前端请求工具中配置的 baseURL 与后端地址一致。
-安装与运行
+| 模块名称 | 核心功能 |
+|---------|----------|
+| 学科管理（Subject） | 全量查询学科列表、新增学科、修改学科信息、删除指定学科、按 ID 查询学科（回显） |
+| 部门管理（Dept） | 全量查询部门列表、新增部门、修改部门信息、删除指定部门、按 ID 查询部门（回显） |
+| 班级管理（Clazz） | 条件分页查询班级、全量查询班级、详情查询、新增 / 编辑 / 删除班级（扩展模块） |
+| （可扩展） | 成绩管理、权限管理等校园核心业务模块 |
 
-bash
+## 快速开始
 
+### 环境准备
 
-运行
+- 安装 Node.js（推荐 v16.x 及以上版本），自带 npm 包管理工具；
+- 开发工具推荐：VSCode + Volar 插件（禁用 Vetur） + TypeScript Vue Plugin (Volar)；
+- 确保后端接口服务已启动，且前端请求工具中配置的 baseURL 与后端地址一致。
 
+### 安装与运行
 
-
-
+```bash
 # 克隆项目
 自行复制克隆地址即可
 
@@ -55,14 +53,10 @@ npm run build
 
 # （可选）ESLint 代码检查与自动修复
 npm run lint
-项目目录结构
 
-plaintext
+# 项目目录结构
 
-
-
-
-
+```text
 src/
 ├── api/                # 接口封装目录（按业务模块拆分）
 │   ├── sub.js          # 学科管理接口（查询/新增/编辑/删除/回显）
@@ -84,24 +78,20 @@ src/
 │   └── ...             # 其他业务页面
 ├── App.vue             # 根组件（全局布局/路由出口）
 └── main.js             # 项目入口（Vue 实例创建/全局配置）
-核心接口规范
+```
 
-接口封装原则
+# 核心接口规范
 
-所有业务接口统一放置在 src/api/ 目录，按模块拆分文件（如 sub.js 对应学科、dept.js 对应部门）；
-接口函数基于 @/utils/request.js 封装的 Axios 实例实现，自动继承请求 / 响应拦截能力（如 Token 携带、统一错误处理）；
-接口命名语义化：[动作] + Api（如 queryAllApi 全量查询、addApi 新增、updateApi 修改）；
-路径参数使用 ES6 模板字符串拼接，请求体参数直接传入，与后端 RESTful 接口规范对齐。
-核心接口示例（学科管理 | src/api/sub.js）
+## 接口封装原则
 
-javascript
+- 所有业务接口统一放置在 `src/api/` 目录，按模块拆分文件（如 `sub.js` 对应学科、`dept.js` 对应部门）；
+- 接口函数基于 `@/utils/request.js` 封装的 Axios 实例实现，自动继承请求/响应拦截能力（如 Token 携带、统一错误处理）；
+- 接口命名语义化：`[动作] + Api`（如 `queryAllApi` 全量查询、`addApi` 新增、`updateApi` 修改）；
+- 路径参数使用 ES6 模板字符串拼接，请求体参数直接传入，与后端 RESTful 接口规范对齐。
 
+## 核心接口示例（学科管理 | src/api/sub.js）
 
-运行
-
-
-
-
+```javascript
 import RequestApi from '@/utils/request.js';
 
 // 查询所有学科列表
@@ -118,16 +108,11 @@ export const addApi = (subject) => RequestApi.post('/subjects', subject);
 
 // 按ID查询学科（回显/详情，路径参数传ID）
 export const queryByIdApi = (id) => RequestApi.get(`/subjects/${id}`);
-接口调用示例
+```
 
-javascript
+## 接口调用示例
 
-
-运行
-
-
-
-
+```javascript
 // 以学科管理为例，在页面组件中调用接口
 import { queryAllApi, addApi } from '@/api/sub.js';
 
@@ -152,24 +137,20 @@ const addSubject = async (newSubject) => {
     alert('新增失败：' + err.message);
   }
 };
-全局请求工具（src/utils/request.js）
+```
 
-核心功能
+# 全局请求工具（src/utils/request.js）
 
-配置基础请求地址（baseURL），适配开发 / 生产环境的接口地址切换；
-请求拦截器：统一添加 Token、Content-Type 等请求头，实现权限校验前置处理；
-响应拦截器：统一处理后端返回码（如 401 未登录、403 无权限、500 服务器错误），简化业务层异常处理；
-通用配置：超时时间设置、跨域请求处理、请求取消机制等。
-基础配置示例
+## 核心功能
 
-javascript
+- 配置基础请求地址（baseURL），适配开发/生产环境的接口地址切换；
+- 请求拦截器：统一添加 Token、Content-Type 等请求头，实现权限校验前置处理；
+- 响应拦截器：统一处理后端返回码（如 401 未登录、403 无权限、500 服务器错误），简化业务层异常处理；
+- 通用配置：超时时间设置、跨域请求处理、请求取消机制等。
 
+## 基础配置示例
 
-运行
-
-
-
-
+```javascript
 import axios from 'axios';
 
 // 创建 Axios 实例
@@ -209,46 +190,42 @@ RequestApi.interceptors.response.use(
 );
 
 export default RequestApi;
-开发规范
+```
 
-1. 代码风格
+# 开发规范
 
-遵循 ESLint + Prettier 配置，提交代码前执行 npm run lint 修复规范问题；
-Vue 组件优先使用 <script setup> 语法，减少冗余代码；
-变量 / 函数命名语义化：驼峰命名（如 getSubjectList），避免拼音 / 无意义命名。
-2. 接口开发
+## 1. 代码风格
 
-接口文件按业务模块拆分，禁止所有接口写在同一个文件；
-接口函数仅做请求封装，不包含业务逻辑；
-异步请求必须添加异常捕获（try/catch 或 .catch）。
-3. 资源管理
+- 遵循 ESLint + Prettier 配置，提交代码前执行 `npm run lint` 修复规范问题；
+- Vue 组件优先使用 `<script setup>` 语法，减少冗余代码；
+- 变量/函数命名语义化：驼峰命名（如 `getSubjectList`），避免拼音/无意义命名。
 
-小马宝莉主题资源统一放在 src/assets/pony/ 目录，按类型拆分（图片 / 样式）；
-静态图片优先使用相对路径，避免绝对路径导致部署问题。
-部署说明
+## 2. 接口开发
 
-1. 打包构建
+- 接口文件按业务模块拆分，禁止所有接口写在同一个文件；
+- 接口函数仅做请求封装，不包含业务逻辑；
+- 异步请求必须添加异常捕获（`try/catch` 或 `.catch`）。
 
-bash
+## 3. 资源管理
 
+- 小马宝莉主题资源统一放在 `src/assets/pony/` 目录，按类型拆分（图片/样式）；
+- 静态图片优先使用相对路径，避免绝对路径导致部署问题。
 
-运行
+# 部署说明
 
+## 1. 打包构建
 
-
-
+```bash
 # 生成生产环境打包文件（输出至 dist 目录）
 npm run build
-2. 服务器部署
+```
 
-将 dist 目录上传至 Nginx/Apache 等 Web 服务器；
+## 2. 服务器部署
+
+将 `dist` 目录上传至 Nginx/Apache 等 Web 服务器；
 配置 Nginx 反向代理解决跨域问题（示例）：
-nginx
 
-
-
-
-
+```nginx
 server {
     listen 80;
     server_name ponyville-school.com; # 自定义域名
@@ -275,19 +252,21 @@ server {
         proxy_pass http://后端接口地址;
     }
 }
-注意事项
+```
 
-学科 / 部门 / 班级的删除接口参数格式（路径参数 / 查询参数）需与后端严格对齐；
-小马宝莉主题资源仅用于非商业场景，需注意版权合规；
-生产环境部署时，需关闭前端控制台日志、启用接口请求加密（如 Token 校验）。
+# 注意事项
 
-扩展说明
+- 学科/部门/班级的删除接口参数格式（路径参数/查询参数）需与后端严格对齐；
+- 小马宝莉主题资源仅用于非商业场景，需注意版权合规；
+- 生产环境部署时，需关闭前端控制台日志、启用接口请求加密（如 Token 校验）。
+
+# 扩展说明
 
 本项目支持快速扩展新的业务模块，扩展流程：
-在 src/api/ 目录新增对应模块的接口文件；
-在 src/views/ 目录开发模块页面组件；
-在路由配置中新增模块路由规则；
-复用 src/utils/request.js 统一请求工具，无需重复封装。
+1. 在 `src/api/` 目录新增对应模块的接口文件；
+2. 在 `src/views/` 目录开发模块页面组件；
+3. 在路由配置中新增模块路由规则；
+4. 复用 `src/utils/request.js` 统一请求工具，无需重复封装。
 
 
 
